@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+
+import requests
+import argparse
+from json import loads
+
+parser = argparse.ArgumentParser(description='Language translation service.')
+parser.add_argument("--from","-from","--f","-f")
+parser.add_argument("--to","-to","--t","-t","--language","-language")
+args = parser.parse_args().__dict__
+
+cookies = {
+    'ARRAffinity': '48fc7157821b5b458035d5e7290873c4f41d0386c13c2f137346438ffc9ed41a',
+}
+
+headers = {
+    'Origin': 'https://translate.shell.com',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36',
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Accept': 'application/json, text/javascript, */*; q=0.01',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Connection': 'keep-alive',
+}
+
+language_codes={
+   "chinese":"zh-CHS",
+   "english": "en",
+   "afrikaans": "af",
+   "arabic": "ar",
+   "bangla": "bn",
+   "bulgarian": "bg",
+   "catalan": "ca",
+   "croatian": "hr",
+   "czech": "cs",
+   "danish": "da",
+   "dutch": "nl",
+   "estonian": "et",
+   "fijian": "fj",
+   "filipino": "fil",
+   "finnish": "fi",
+   "french": "fr",
+   "german": "de",
+   "greek": "el",
+   "hebrew": "he",
+   "hindi": "hi",
+   "hungarian": "hu",
+   "icelandic": "is",
+   "indonesian": "id",
+   "italian": "it",
+   "japanese": "ja",
+   "kiswahili": "sw",
+   "klingon": "tlh",
+   "korean": "ko",
+   "latvian": "lv",
+   "lithuanian": "lt",
+   "malagasy": "mg",
+   "malay": "ms",
+   "maltese": "mt",
+   "persian": "fa",
+   "polish": "pl",
+   "portuguese": "pt",
+   "romanian": "ro",
+   "russian": "ru",
+   "samoan": "sm",
+   "slovak": "sk",
+   "slovenian": "sl",
+   "spanish": "es",
+   "swedish": "sv",
+   "tahitian": "ty",
+   "tamil": "ta",
+   "telugu": "te",
+   "thai": "th",
+   "tongan": "to",
+   "turkish": "tr",
+   "ukrainian": "uk",
+   "urdu": "ur",
+   "vietnamese": "vi",
+   "welsh": "cy"
+}
+
+data = '{"text":\"' + language_codes[args["to"].lower()] + '\","language":\"' + args["from"] + '\"}'
+
+response = requests.post('https://translate.shell.com/api/translate/translate', headers=headers, cookies=cookies, data=data)
+json_response=loads(response.text)
+translation=json_response["text"]
+print(translation)
